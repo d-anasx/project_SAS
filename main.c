@@ -18,7 +18,7 @@ typedef struct {
     int idAvion ;
     char modele[30] ;
     int capacite ;
-    int statut ;
+    char statut[30] ;
 } Avion ;
 
 
@@ -37,24 +37,44 @@ Aeroport a ;
 
     void ajouterAvion(){
         int n;
+        char input[30];
         printf("combien d avions voulez vous entrer : ");
         scanf("%d" , &n);
 
         for(int i = 0 ; i < n ; i++){
             printf("entrer le modele de l avion : ");
-            scanf(" %[^\n]" , a.avions[n].modele);
+            scanf(" %[^\n]" , a.avions[a.nbAvions].modele);
 
             printf("entrer la capacite de l avion : ");
-            scanf(" %d" , &a.avions[n].capacite);
+            scanf("%d" , &a.avions[a.nbAvions].capacite);
+            
+            do{
+                printf("entrer le statut de l avion : ");
+                
+                scanf(" %[^\n]" , input);
+            }
+            while( strcmp(input ,"disponible")!=0  && strcmp(input ,"en vol")!=0 && strcmp(input ,"en maintenance")!=0);
+
+            strcpy(a.avions[a.nbAvions].statut ,input);
         
-            printf("entrer le statut de l avion \n1 pour disponible\n2 pour en vol\n3 en maintenance: ");
-            scanf(" %d" , &a.avions[n].statut);
+
+            a.nbAvions++;
+            a.avions[a.nbAvions - 1].idAvion = a.nbAvions;
             
         }
         
-        a.nbAvions ++;
-        a.avions[n].idAvion = a.nbAvions;
+        
 
+        
+
+    }
+
+    void afficherAvions(){
+        for(int i = 0 ; i< a.nbAvions ; i++){
+            printf(" %s  |  %d  |  %s\n",a.avions[i].modele,
+                                a.avions[i].capacite,
+                                a.avions[i].statut);
+        }
     }
 
 
@@ -71,8 +91,8 @@ int main(){
     do
     {
         printf("\n%s=========== MENU PRINCIPAL ===========%s\n", HEADER, RESET);
-        printf("%s1) %sAjouter un etudiant%s\n", NUMBER, GOLD, RESET);
-        printf("%s2) %sSaisir les notes d un etudiant%s\n", NUMBER, GREEN, RESET);
+        printf("%s1) %sAjouter une avion%s\n", NUMBER, GOLD, RESET);
+        printf("%s2) %sAfficher tous les avions%s\n", NUMBER, GREEN, RESET);
         printf("%s3) %sCalculer la moyenne d un etudiant%s\n", NUMBER, TURQUOISE, RESET);
         printf("%s4) %sCalculer la moyenne generale%s\n", NUMBER, GOLD, RESET);
         printf("%s5) %sAfficher tous les etudiants%s\n", NUMBER, GREEN, RESET);
@@ -90,6 +110,9 @@ int main(){
         {
         case 1:
         ajouterAvion();
+           break;
+        case 2:
+        afficherAvions();
            break;
         case 0:
             exit(0); 
