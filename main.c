@@ -219,7 +219,43 @@ int maxC = 500;
     if(!found) printf("Aucune avion trouve avec ce modele.\n");
 }
 
+void triParCapacite(){
 
+    for(int i=0 ; i<a.nbAvions-1 ; i++ ){
+        for(int j = 0 ; j<a.nbAvions-1 ; j++){
+
+            if(a.avions[j].capacite > a.avions[j+1].capacite ){
+            Avion temp = a.avions[j];
+            a.avions[j] = a.avions[j+1];
+            a.avions[j+1] = temp;
+        }
+        }
+        
+    }
+    
+
+    }
+
+
+    void triParModele(){
+
+    for(int i=0 ; i<a.nbAvions-1 ; i++ ){
+        for(int j = 0 ; j<a.nbAvions-1 ; j++){
+
+            if(stricmp(a.avions[j].modele , a.avions[j+1].modele) > 0){
+
+            Avion temp = a.avions[j];
+            a.avions[j] = a.avions[j+1];
+            a.avions[j+1] = temp;
+        }
+        }
+        
+    }
+    afficherAvions();
+
+    }
+
+    
 
     
 
