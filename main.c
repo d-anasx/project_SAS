@@ -255,7 +255,68 @@ void triParCapacite(){
 
     }
 
+    int TotalEnParc(){
+        int count = 0;
+        for(int i = 0 ; i < a.nbAvions ; i++){
+
+            if (stricmp(a.avions[i].statut,"disponible") == 0) count++;
+           
+        }
+        
+        return count ;
+    }
+
+    void TotalParStatut(){
+        int Dispo_count = 0;
+        int vol_count = 0;
+        int maint_count = 0;
+
+        for(int i = 0 ; i < a.nbAvions ; i++){
+
+             (stricmp(a.avions[i].statut,"disponible") == 0)
+             ? Dispo_count++
+             : (stricmp(a.avions[i].statut,"en vol") == 0)
+             ? vol_count++
+             : maint_count++;
+        }
+        printf("le total des avions disponibles est : %d\n",Dispo_count);
+        printf("le total des avions en vol est : %d\n",vol_count);
+        printf("le total des avions en maintenance est : %d\n",maint_count);
+    }
+
+    void CapaciteTotal(){
+        int count = 0;
+        for(int i = 0 ; i < a.nbAvions ; i++){
+
+            count+=a.avions[i].capacite;
+           
+        }
+        printf("le total des capacites est : %d",count);
     
+    }
+
+    void MaxMinCapacite(){
+
+         triParCapacite();
+         printf("min : ~ %s  |  %d  |  %s ~\n",
+                                a.avions[0].modele,
+                                a.avions[0].capacite,
+                                a.avions[0].statut);
+
+        printf("max : ~ %s  |  %d  |  %s ~\n",
+                                a.avions[a.nbAvions-1].modele,
+                                a.avions[a.nbAvions-1].capacite,
+                                a.avions[a.nbAvions-1].statut);
+
+    }
+
+    void averageAvionsDispo(){
+    
+        float average = (TotalEnParc() * 100  ) / a.nbAvions ;
+        float coef = average / 100;
+         printf("pourcentage d avions disponibles est : %.0f%%\n" , average);
+         printf("le coefficient est : %.2f" , coef);
+    }
 
     
 
