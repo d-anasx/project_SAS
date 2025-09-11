@@ -113,7 +113,7 @@ int maxC = 500;
     }
 
     void afficherAvions() {
-    printf("\nListe des avions dans l'aéroport %s\n", a.nom);
+    printf("\n------Liste des avions dans l'aeroport%s------\n", a.nom);
     printf("ID | Modele | Capacite | Statut | Date\n");
     printf("-------------------------------------\n");
 
@@ -165,7 +165,7 @@ int maxC = 500;
     }
 
     if (!found) {
-        printf("Aucun avion avec l id %d\n", av_id);
+        printf("%sAucun avion avec l id %d%s\n",RED, av_id, RESET);
     }
 }
 
@@ -242,7 +242,7 @@ int maxC = 500;
     if(!found) printf("Aucune avion trouve avec ce modele.\n");
 }
 
-void triParCapacite(){
+    void triParCapacite(){
 
     for(int i=0 ; i<a.nbAvions-1 ; i++ ){
         for(int j = 0 ; j<a.nbAvions-1 ; j++){
@@ -321,12 +321,12 @@ void triParCapacite(){
     void MaxMinCapacite(){
 
          triParCapacite();
-         printf("min : ~ %s  |  %d  |  %s ~\n",
+         printf("avion ayant la plus petite capacite : ~ %s  |  %d  |  %s ~\n",
                                 a.avions[0].modele,
                                 a.avions[0].capacite,
                                 a.avions[0].statut);
 
-        printf("max : ~ %s  |  %d  |  %s ~\n",
+        printf("avion ayant la plus grande capacite : ~ %s  |  %d  |  %s ~\n",
                                 a.avions[a.nbAvions-1].modele,
                                 a.avions[a.nbAvions-1].capacite,
                                 a.avions[a.nbAvions-1].statut);
@@ -347,16 +347,18 @@ void triParCapacite(){
 
     void statistique(){
         int c;
-                printf("\n" BLUE "======================" RESET "\n");
-                printf(CYAN "       STATISTIQUES      " RESET "\n");
-                printf(BLUE "======================" RESET "\n\n");
+
+            do{
+                printf("\n" BLUE "============================================" RESET "\n");
+                printf(CYAN "              STATISTIQUES      " RESET "\n");
+                printf(BLUE "============================================" RESET "\n\n");
 
                 printf(GREEN "1" RESET " => " YELLOW "total des avions dans le parc" RESET "\n");
                 printf(GREEN "2" RESET " => " YELLOW "total des avions par statut" RESET "\n");
                 printf(GREEN "3" RESET " => " YELLOW "total des capacites" RESET "\n");
                 printf(GREEN "4" RESET " => " YELLOW "L'avion ayant la plus grande / petite capacite " RESET "\n");
                 printf(GREEN "5" RESET " => " YELLOW "le pourcentage et le coefficient d avions disponibles dans l aeroport" RESET "\n");
-                
+                printf(GREEN "0" RESET " => " QUIT_NUMBER "Quitter" RESET "\n");
 
                 c = ValidateInt("Faire le choix : ");
 
@@ -377,16 +379,46 @@ void triParCapacite(){
                 case 5 :
                      averageAvionsDispo();
                     break;
-                case 6 :
-                    
-                    break;
+                case 0 :
+                    return;
 
 }
+            } while(1);
+                
     }
 
     //********************/ Traitment Des DATES*****************
 
-    
+    time_t convertToTime(Date d){
+            struct tm t= {0};
+            t.tm_mday = d.jour;
+            t.tm_mon = d.mois - 1;
+            t.tm_year = d.annee - 1900;
+            return mktime(&t);
+    }
+
+    int datesCompare(Date d1 , Date d2){
+        time_t t1 = convertToTime(d1);
+        time_t t2 = convertToTime(d2);
+
+        if (t1 < t2) return -1;
+        if (t1 > t2) return 1;
+        return 0;
+    }
+
+
+    void triParDates(){
+        for (int i = 0; i < a.nbAvions; i++) {
+        for (int j = 0; j < a.nbAvions - 1; j++) {
+            if (datesCompare(a.avions[j].Av_date, a.avions[j+1].Av_date) > 0) {
+                Avion temp = a.avions[j];
+                a.avions[j] = a.avions[j+1];
+                a.avions[j+1] = temp;
+            }
+        }
+    }
+    afficherAvions();
+    }
 
     
 
@@ -419,6 +451,7 @@ int main(){
     a.avions[1].Av_date.mois = 9;
     a.avions[1].Av_date.annee = 2023;
 
+
     strcpy(a.avions[2].modele, "Cessna 172");
     a.avions[2].capacite = 4;
     strcpy(a.avions[2].statut, "en maintenance");
@@ -442,10 +475,11 @@ int main(){
         printf("%s4) %smodifier une avion%s\n", NUMBER, TURQUOISE, RESET);
         printf("%s5) %ssupprimer une avion%s\n", NUMBER, TURQUOISE, RESET);
         printf("%s6) %srechercher un avion par ID%s\n", NUMBER, TURQUOISE, RESET);
-        printf("%s7) %srechercher une avion par Modele%s\n", NUMBER, TURQUOISE, RESET);
+        printf("%s7) %srechercher des avions par Modele%s\n", NUMBER, TURQUOISE, RESET);
         printf("%s8) %strier par capacite%s\n", NUMBER, TURQUOISE, RESET);
         printf("%s9) %strier par Modele%s\n", NUMBER, TURQUOISE, RESET);
-        printf("%s10) %sstatiqtiques%s\n", NUMBER, TURQUOISE, RESET);
+        printf("%s10) %strier par date%s\n", NUMBER, TURQUOISE, RESET);
+        printf("%s11) %sstatiqtiques%s\n", NUMBER, TURQUOISE, RESET);
         printf("%s0) %sQuitter%s\n", QUIT_NUMBER, QUIT_NUMBER, RESET);
         printf("%s====================================================%s\n", HEADER, RESET);
         
@@ -481,9 +515,13 @@ int main(){
         triParModele();
            break;
         case 10:
+        triParDates();
+           break;
+        case 11:
         statistique();
            break;
         case 0:
+            printf("%sAu revoir !%s\n",YELLOW,RESET);
             exit(0); 
         }
 
@@ -492,7 +530,3 @@ int main(){
 }
 
 
-
-//ajouter
-// a.nbAvions = 
-// a.nbAvions++;
