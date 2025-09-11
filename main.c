@@ -173,7 +173,53 @@ int maxC = 500;
 
     
 
-    
+    void rechercherAvionById(){
+        int found = 0;
+        int av_id;
+        printf("donner l id de l avion : ");
+        scanf("%d", &av_id) ;
+
+        for (int i = 0; i < a.nbAvions; i++){
+
+            if (a.avions[i].idAvion == av_id)
+            {
+                found = 1;
+                printf("%s  |  %d  |  %s\n",
+                                a.avions[i].modele,
+                                a.avions[i].capacite,
+                                a.avions[i].statut);
+
+        }
+    }
+    if(!found) printf("Aucune avion trouve avec cet id\n");
+            
+        
+    }
+
+    void rechercherAvionByModel(){
+
+        char av_modele[30];
+        printf("donner le modele de l avion : ");
+        scanf(" %[^\n]", av_modele) ;
+        int found = 0;
+
+        
+        for (int i = 0; i < a.nbAvions; i++){
+
+            if (stricmp(a.avions[i].modele,av_modele) == 0)
+            {
+                found = 1;
+                printf("%s  |  %d  |  %s\n",
+                                a.avions[i].modele,
+                                a.avions[i].capacite,
+                                a.avions[i].statut);
+
+        }
+    }
+    if(!found) printf("Aucune avion trouve avec ce modele.\n");
+}
+
+
 
     
 
