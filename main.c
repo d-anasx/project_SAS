@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
 
 #define ESC "\033["
 
@@ -182,11 +183,11 @@ int maxC = 500;
         }
             a.nbAvions--;
             found = 1;
-            printf("Avion avec id %d supprime avec succes.\n", av_id);
+            printf("%sAvion avec id %d supprime avec succes%s\n",GREEN, av_id,RESET);
             break;
             }
         }
-        if(!found) printf("Aucun avion avec l id %d\n", av_id);
+        if(!found) printf("%sAucun avion avec l id %d%s\n",RED, av_id,RESET);
 
 
 
@@ -353,10 +354,8 @@ void triParCapacite(){
                 printf(GREEN "1" RESET " => " YELLOW "total des avions dans le parc" RESET "\n");
                 printf(GREEN "2" RESET " => " YELLOW "total des avions par statut" RESET "\n");
                 printf(GREEN "3" RESET " => " YELLOW "total des capacites" RESET "\n");
-                printf(GREEN "4" RESET " => " YELLOW "L'avion ayant la plus grande / petite capacité " RESET "\n");
+                printf(GREEN "4" RESET " => " YELLOW "L'avion ayant la plus grande / petite capacite " RESET "\n");
                 printf(GREEN "5" RESET " => " YELLOW "le pourcentage et le coefficient d avions disponibles dans l aeroport" RESET "\n");
-                printf(GREEN "5" RESET " => " YELLOW "le pourcentage d avions disponibles dans l aeroport" RESET "\n\n");
-
                 
 
                 c = ValidateInt("Faire le choix : ");
@@ -384,6 +383,10 @@ void triParCapacite(){
 
 }
     }
+
+    //********************/ Traitment Des DATES*****************
+
+    
 
     
 
@@ -440,7 +443,9 @@ int main(){
         printf("%s5) %ssupprimer une avion%s\n", NUMBER, TURQUOISE, RESET);
         printf("%s6) %srechercher un avion par ID%s\n", NUMBER, TURQUOISE, RESET);
         printf("%s7) %srechercher une avion par Modele%s\n", NUMBER, TURQUOISE, RESET);
-        printf("%s8) %sstatiqtiques%s\n", NUMBER, TURQUOISE, RESET);
+        printf("%s8) %strier par capacite%s\n", NUMBER, TURQUOISE, RESET);
+        printf("%s9) %strier par Modele%s\n", NUMBER, TURQUOISE, RESET);
+        printf("%s10) %sstatiqtiques%s\n", NUMBER, TURQUOISE, RESET);
         printf("%s0) %sQuitter%s\n", QUIT_NUMBER, QUIT_NUMBER, RESET);
         printf("%s====================================================%s\n", HEADER, RESET);
         
