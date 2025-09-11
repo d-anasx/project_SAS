@@ -20,10 +20,17 @@
 #define CYAN    "\033[36m"
 
 typedef struct {
+    int jour;
+    int mois;
+    int annee;
+} Date;
+
+typedef struct {
     int idAvion ;
     char modele[30] ;
     int capacite ;
     char statut[30] ;
+    Date Av_date;
 } Avion ;
 
 
@@ -68,8 +75,10 @@ int maxC = 500;
         printf("combien d avions voulez vous entrer : ");
         scanf("%d" , &n);
 
+        
         for(int i = 0 ; i < n ; i++){
-            printf("entrer le modele de l avion : ");
+            printf("----------------------------------------------------------\n\n");
+            printf("entrer le modele de l avion %d: ",i + 1);
             scanf(" %[^\n]" , a.avions[a.nbAvions].modele);
 
             
@@ -83,10 +92,16 @@ int maxC = 500;
             while( strcmp(input ,"disponible")!=0  && strcmp(input ,"en vol")!=0 && strcmp(input ,"en maintenance")!=0);
 
             strcpy(a.avions[a.nbAvions].statut ,input);
-        
-            
+
+            //****** entree de la date ******* */
+            printf("Entrer la date (jj mm aaaa) : ");
+            scanf("%d %d %d", &a.avions[a.nbAvions].Av_date.jour, &a.avions[a.nbAvions].Av_date.mois, &a.avions[a.nbAvions].Av_date.annee);
+            //******************************* */
+
             a.avions[a.nbAvions].idAvion =  id++;
             a.nbAvions++;
+
+            
             
         }
         
@@ -98,15 +113,18 @@ int maxC = 500;
 
     void afficherAvions() {
     printf("\nListe des avions dans l'aéroport %s\n", a.nom);
-    printf("ID | Modele | Capacite | Statut\n");
-    printf("-------------------------------\n");
+    printf("ID | Modele | Capacite | Statut | Date\n");
+    printf("-------------------------------------\n");
 
     for (int i = 0; i < a.nbAvions; i++) {
-        printf("%d | %s | %d | %s\n",
+        printf("%d | %s | %d | %s | %d/%d/%d\n",
             a.avions[i].idAvion,
             a.avions[i].modele,
             a.avions[i].capacite,
-            a.avions[i].statut);
+            a.avions[i].statut,
+            a.avions[i].Av_date.jour,
+            a.avions[i].Av_date.mois,
+            a.avions[i].Av_date.annee);
     }
 }
 
@@ -384,15 +402,28 @@ int main(){
     strcpy(a.avions[0].statut, "disponible");
     a.avions[0].idAvion = 1;
 
+    a.avions[0].Av_date.jour = 15;
+    a.avions[0].Av_date.mois = 3;
+    a.avions[0].Av_date.annee = 2020;
+
+
     strcpy(a.avions[1].modele, "Airbus A320");
     a.avions[1].capacite = 150;
     strcpy(a.avions[1].statut, "en vol");
     a.avions[1].idAvion = 2;
 
+    a.avions[1].Av_date.jour = 04;
+    a.avions[1].Av_date.mois = 9;
+    a.avions[1].Av_date.annee = 2023;
+
     strcpy(a.avions[2].modele, "Cessna 172");
     a.avions[2].capacite = 4;
     strcpy(a.avions[2].statut, "en maintenance");
     a.avions[2].idAvion = 3;
+
+    a.avions[2].Av_date.jour = 22;
+    a.avions[2].Av_date.mois = 1;
+    a.avions[2].Av_date.annee = 2019;
 
 
 
