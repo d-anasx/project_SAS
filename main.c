@@ -49,8 +49,12 @@ int maxC = 500;
     while (1)
     {
         printf("%s", prompt);
-        if (scanf("%d", &number) == 1) 
-            break;
+        if (scanf("%d", &number) == 1){
+            if (number >= 0 && number <= maxC){
+                break;
+            }
+        }
+            
         while (getchar() != '\n')
             ;
         printf("%sentrer un nombre valid !!%s\n",RED,RESET);
@@ -68,8 +72,8 @@ int maxC = 500;
             printf("entrer le modele de l avion : ");
             scanf(" %[^\n]" , a.avions[a.nbAvions].modele);
 
-            printf("entrer la capacite de l avion : ");
-            scanf("%d" , &a.avions[a.nbAvions].capacite);
+            
+            a.avions[a.nbAvions].capacite = ValidateInt("entrer la capacite de l avion : ");
             
             do{
                 printf("entrer le statut de l avion : ");
@@ -392,12 +396,12 @@ int main(){
 
 
 
-    printf("name : ");
+    printf("donner le nom de l Aeroport : ");
     scanf("%s" , a.nom);
 
     do
     {
-        printf("\n%s=========== MENU PRINCIPAL ===========%s\n", HEADER, RESET);
+        printf("\n%s================== MENU PRINCIPAL ==================%s\n", HEADER, RESET);
         printf("%s1) %sAjouter une avion%s\n", NUMBER, TURQUOISE, RESET);
         printf("%s2) %sAfficher tous les avions%s\n", NUMBER, TURQUOISE, RESET);
         printf("%s3) %sAfficher tous les infos de l Aeroport%s\n", NUMBER, TURQUOISE, RESET);
@@ -407,7 +411,7 @@ int main(){
         printf("%s7) %srechercher une avion par Modele%s\n", NUMBER, TURQUOISE, RESET);
         printf("%s8) %sstatiqtiques%s\n", NUMBER, TURQUOISE, RESET);
         printf("%s0) %sQuitter%s\n", QUIT_NUMBER, QUIT_NUMBER, RESET);
-        printf("%s======================================%s\n", HEADER, RESET);
+        printf("%s====================================================%s\n", HEADER, RESET);
         
         choix = ValidateInt("Faire le choix : ");
         switch (choix)
