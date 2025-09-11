@@ -13,6 +13,11 @@
 #define QUIT_TEXT ESC "38;5;51m"
 #define PROMPT ESC "38;5;201m"
 #define RESET ESC "0m"
+#define RED     "\033[31m"
+#define YELLOW  "\033[33m"
+#define BLUE    "\033[34m"
+#define MAGENTA "\033[35m"
+#define CYAN    "\033[36m"
 
 typedef struct {
     int idAvion ;
@@ -32,8 +37,26 @@ typedef struct {
 
 Aeroport a ;
 
+int id = 4;
+int maxC = 500;
+
 
 //functions
+
+    int ValidateInt(char prompt[])
+{
+    int number;
+    while (1)
+    {
+        printf("%s", prompt);
+        if (scanf("%d", &number) == 1) 
+            break;
+        while (getchar() != '\n')
+            ;
+        printf("%sentrer un nombre valid !!%s\n",RED,RESET);
+    }
+    return number;
+}
 
     void ajouterAvion(){
         int n;
@@ -57,9 +80,9 @@ Aeroport a ;
 
             strcpy(a.avions[a.nbAvions].statut ,input);
         
-
+            
+            a.avions[a.nbAvions].idAvion =  id++;
             a.nbAvions++;
-            a.avions[a.nbAvions - 1].idAvion = a.nbAvions;
             
         }
         
@@ -69,21 +92,162 @@ Aeroport a ;
 
     }
 
-    void afficherAvions(){
-        for(int i = 0 ; i< a.nbAvions ; i++){
-            printf(" %s  |  %d  |  %s\n",a.avions[i].modele,
-                                a.avions[i].capacite,
-                                a.avions[i].statut);
+    void afficherAvions() {
+    printf("\nListe des avions dans l'aéroport %s\n", a.nom);
+    printf("ID | Modele | Capacite | Statut\n");
+    printf("-------------------------------\n");
+
+    for (int i = 0; i < a.nbAvions; i++) {
+        printf("%d | %s | %d | %s\n",
+            a.avions[i].idAvion,
+            a.avions[i].modele,
+            a.avions[i].capacite,
+            a.avions[i].statut);
+    }
+}
+
+
+    void afficherAeroport(){
+        printf("\nInformations sur l'aeroport\n");
+        printf("Nom: %s\n", a.nom);
+        printf("Nombre total d'avions: %d\n", a.nbAvions);
+    }
+
+
+
+    void modifierAvion(){
+    int av_id;
+    char input[30];
+    printf("donner l'id de l'avion : ");
+    scanf("%d", &av_id);
+
+    int found = 0;
+    for (int i = 0; i < a.nbAvions; i++) {
+        if (a.avions[i].idAvion == av_id) {
+            printf("entrer le modele de l avion : ");
+            scanf(" %[^\n]" , a.avions[i].modele);
+
+            printf("entrer la capacite de l avion : ");
+            scanf("%d" , &a.avions[i].capacite);
+                
+            do {
+                printf("entrer le statut de l avion : ");
+                scanf(" %[^\n]" , input);
+            } while (strcmp(input ,"disponible")!=0 && strcmp(input ,"en vol")!=0 && strcmp(input ,"en maintenance")!=0);
+
+            strcpy(a.avions[i].statut ,input);    
+            found = 1;
+            break;
         }
     }
+
+    if (!found) {
+        printf("Aucun avion avec l id %d\n", av_id);
+    }
+}
+
+
+    void supprimerAvion(){
+        int av_id;
+        printf("donner l id de l avion : ");
+        scanf("%d", &av_id);
+        int found = 0 ;
+
+        for(int i=0 ; i<a.nbAvions ; i++){
+            if(a.avions[i].idAvion == av_id){
+                for(int j=i ; j < a.nbAvions - 1 ; j++){
+                a.avions[j] = a.avions[j + 1];
+        }
+            a.nbAvions--;
+            found = 1;
+            printf("Avion avec id %d supprime avec succes.\n", av_id);
+            break;
+            }
+        }
+        if(!found) printf("Aucun avion avec l id %d\n", av_id);
+
+
+
+        
+    }
+
+    
+
+    
+
+    
+
+    
+
+    void statistique(){
+        int c;
+                printf("\n" BLUE "======================" RESET "\n");
+                printf(CYAN "       STATISTIQUES      " RESET "\n");
+                printf(BLUE "======================" RESET "\n\n");
+
+                printf(GREEN "1" RESET " => " YELLOW "total des avions dans le parc" RESET "\n");
+                printf(GREEN "2" RESET " => " YELLOW "total des avions par statut" RESET "\n");
+                printf(GREEN "3" RESET " => " YELLOW "total des capacites" RESET "\n");
+                printf(GREEN "4" RESET " => " YELLOW "L'avion ayant la plus grande / petite capacité " RESET "\n");
+                printf(GREEN "5" RESET " => " YELLOW "le pourcentage et le coefficient d avions disponibles dans l aeroport" RESET "\n");
+                printf(GREEN "5" RESET " => " YELLOW "le pourcentage d avions disponibles dans l aeroport" RESET "\n\n");
+
+                
+
+                c = ValidateInt("Faire le choix : ");
+
+                switch (c)
+                {
+                case 1 :
+                    printf("le total des avions dans le parc est : %d",TotalEnParc()); 
+                    break;
+                case 2 :
+                    TotalParStatut();
+                    break;
+                case 3 : 
+                    CapaciteTotal();
+                    break;
+                case 4 :
+                    MaxMinCapacite();
+                    break;
+                case 5 :
+                     averageAvionsDispo();
+                    break;
+                case 6 :
+                    
+                    break;
+
+}
+    }
+
+    
+
+
+    
 
 
 int main(){ 
 
-    a.nbAvions = 0;
-
-
+    a.nbAvions = 3;
     int choix;
+
+    //some Data 
+    strcpy(a.avions[0].modele, "Boeing 737");
+    a.avions[0].capacite = 180;
+    strcpy(a.avions[0].statut, "disponible");
+    a.avions[0].idAvion = 1;
+
+    strcpy(a.avions[1].modele, "Airbus A320");
+    a.avions[1].capacite = 150;
+    strcpy(a.avions[1].statut, "en vol");
+    a.avions[1].idAvion = 2;
+
+    strcpy(a.avions[2].modele, "Cessna 172");
+    a.avions[2].capacite = 4;
+    strcpy(a.avions[2].statut, "en maintenance");
+    a.avions[2].idAvion = 3;
+
+
 
     printf("name : ");
     scanf("%s" , a.nom);
@@ -91,21 +255,18 @@ int main(){
     do
     {
         printf("\n%s=========== MENU PRINCIPAL ===========%s\n", HEADER, RESET);
-        printf("%s1) %sAjouter une avion%s\n", NUMBER, GOLD, RESET);
-        printf("%s2) %sAfficher tous les avions%s\n", NUMBER, GREEN, RESET);
-        printf("%s3) %sCalculer la moyenne d un etudiant%s\n", NUMBER, TURQUOISE, RESET);
-        printf("%s4) %sCalculer la moyenne generale%s\n", NUMBER, GOLD, RESET);
-        printf("%s5) %sAfficher tous les etudiants%s\n", NUMBER, GREEN, RESET);
-        printf("%s6) %sAfficher le bulletin d un etudiant%s\n", NUMBER, TURQUOISE, RESET);
-        printf("%s7) %stri par CNE%s\n", NUMBER, GOLD, RESET);
-        printf("%s8) %srecherche de bulletin par CNE%s\n", NUMBER, GREEN, RESET);
-        printf("%s9) %srecherche de binaire par CNE%s\n", NUMBER, TURQUOISE, RESET);
+        printf("%s1) %sAjouter une avion%s\n", NUMBER, TURQUOISE, RESET);
+        printf("%s2) %sAfficher tous les avions%s\n", NUMBER, TURQUOISE, RESET);
+        printf("%s3) %sAfficher tous les infos de l Aeroport%s\n", NUMBER, TURQUOISE, RESET);
+        printf("%s4) %smodifier une avion%s\n", NUMBER, TURQUOISE, RESET);
+        printf("%s5) %ssupprimer une avion%s\n", NUMBER, TURQUOISE, RESET);
+        printf("%s6) %srechercher un avion par ID%s\n", NUMBER, TURQUOISE, RESET);
+        printf("%s7) %srechercher une avion par Modele%s\n", NUMBER, TURQUOISE, RESET);
+        printf("%s8) %sstatiqtiques%s\n", NUMBER, TURQUOISE, RESET);
         printf("%s0) %sQuitter%s\n", QUIT_NUMBER, QUIT_NUMBER, RESET);
         printf("%s======================================%s\n", HEADER, RESET);
-        printf("%sFaire le choix : %s", PROMPT, RESET);
         
-
-        scanf("%d", &choix);
+        choix = ValidateInt("Faire le choix : ");
         switch (choix)
         {
         case 1:
@@ -113,6 +274,31 @@ int main(){
            break;
         case 2:
         afficherAvions();
+           break;
+        case 3:
+        afficherAeroport();
+           break;
+        case 4:
+        modifierAvion();
+           break;
+        case 5:
+        supprimerAvion();
+           break;
+        case 6:
+        rechercherAvionById();
+           break;
+        case 7:
+        rechercherAvionByModel();
+           break;
+        case 8:
+        triParCapacite();
+        afficherAvions();
+           break;
+        case 9:
+        triParModele();
+           break;
+        case 10:
+        statistique();
            break;
         case 0:
             exit(0); 
