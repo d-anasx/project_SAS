@@ -49,8 +49,8 @@ int id = 4;
 int maxC = 500;
 
 
-//functions
 
+//validation function
     int ValidateInt(char prompt[])
 {
     int number;
@@ -70,6 +70,7 @@ int maxC = 500;
     return number;
 }
 
+//all other functions
     void ajouterAvion(){
         int n;
         char input[30];
@@ -137,7 +138,6 @@ int maxC = 500;
     }
 
 
-
     void modifierAvion(){
     int av_id;
     char input[30];
@@ -195,7 +195,6 @@ int maxC = 500;
     }
 
     
-
     void rechercherAvionById(){
         int found = 0;
         int av_id;
@@ -387,7 +386,7 @@ int maxC = 500;
                 
     }
 
-    //********************/ Traitment Des DATES*****************
+    //***************************/ Traitment Des DATES******************************
 
     time_t convertToTime(Date d){
             struct tm t= {0};
@@ -420,7 +419,7 @@ int maxC = 500;
     afficherAvions();
     }
 
-    
+    //********************************************************************************
 
 
     
@@ -431,7 +430,7 @@ int main(){
     a.nbAvions = 3;
     int choix;
 
-    //some Data 
+    //some Data for testing
     strcpy(a.avions[0].modele, "Boeing 737");
     a.avions[0].capacite = 180;
     strcpy(a.avions[0].statut, "disponible");
@@ -461,7 +460,7 @@ int main(){
     a.avions[2].Av_date.mois = 1;
     a.avions[2].Av_date.annee = 2019;
 
-
+    //************************************************** */
 
     printf("donner le nom de l Aeroport : ");
     scanf("%s" , a.nom);
